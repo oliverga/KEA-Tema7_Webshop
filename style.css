@@ -1,0 +1,386 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #d90b0b;
+    --secondary-color: #2d2d2d;
+    --tertiary-color: #ffffff;
+    --border: 1px solid #cfcfcf;
+    --border-hover: 1px solid #808080;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+   
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    color: var(--secondary-color);
+    background-color: var(--tertiary-color);
+}
+   
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1.4rem 2rem;
+    border-bottom: var(--border);
+}
+
+nav li {
+    margin-right: 1rem;
+}
+
+nav a {
+    color: #2d2d2d;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: all 0.2s ease-in-out;
+}
+
+nav a:hover {
+    transform: scale(1.1);
+}
+
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+}
+
+footer {
+    padding: 1rem 2rem;
+    border-top: var(--border);
+    border-right: var(--border);
+    border-radius: 0 10px 0 0;
+    position: fixed;
+    bottom: 0;
+    width: fit-content;
+    background-color: var(--tertiary-color);
+}
+
+footer p {
+    font-size: 0.8rem;
+    font-weight: 400;
+    text-align: left;
+    color: #2d2d2d;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+section {
+    margin-bottom: 4rem;
+}
+
+section:last-child {
+    margin-bottom: 10rem;
+}
+
+section:first-child {
+    margin-top: 2rem;
+}
+
+button {
+    transform: translateY(-0.1rem);
+}
+
+.category_heading {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.category_heading a {
+    color: #2d2d2d;
+    text-decoration: underline;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: all 0.2s ease-in-out;
+}
+
+.category_flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+
+
+}
+
+.category_flex a {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    text-decoration: none;
+    color: #2d2d2d;
+    font-size: 1rem;
+    font-weight: 400;
+    border: var(--border);
+    transition: border 0.2s ease-in-out;
+}
+
+.category_flex a:hover {
+    border: var(--border-hover);
+}
+
+.product_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 1.5rem;
+}
+
+.product_card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.product_card h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+}
+
+.product_card p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+}
+
+.product_card p::after {
+    display: inline-block;
+    font-size: 1rem;
+}
+
+.product_card img {
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+    display: block;
+    border: var(--border);
+    transition: all 0.15s ease-in-out;
+
+}
+
+.product_card img:hover {
+    border: var(--border-hover);
+}
+
+.product_card button {
+    border-radius: 200px;
+    border: var(--border);
+    padding: 0.7rem 1rem;
+    width: fit-content;
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    background: none;
+    color: #2d2d2d;
+}
+
+.product_card button:hover {
+    border: var(--border-hover);
+}
+
+.product_card button:active {
+    background-color: #dedede;
+}
+
+.sold_out p {
+    text-decoration: line-through;
+}
+
+.sold_out p::after {
+    display: inline-block;
+    content: "Sold Out";
+    margin-left: 0.5rem;
+    text-decoration: none;
+}
+
+.sold_out button {
+    content: "Sold Out";
+    text-decoration: line-through;
+    pointer-events: none;
+    background-color: #dedede;   
+
+}
+
+.sold_out img {
+    border: 1px dashed #cfcfcf;
+}
+
+.sold_out img:hover {
+    border: 1px dashed #808080;
+}
+
+.deal p {
+    text-decoration: line-through;
+}
+
+.deal p::after {
+    display: inline-block;
+    content: "495,- kr";
+    color: #d90b0b;
+    margin-left: 0.5rem;
+    text-decoration: none;
+}
+
+.deal img {
+    border: 1px solid #ff47478e;
+}
+
+.deal img:hover {
+    border: 1px solid #ff3434;
+}
+
+.deal.sold_out p::after {
+    content: "495,- kr Sold Out";
+}
+
+.deal.sold_out img {
+    border: 1px dashed #ff47478e;
+}
+
+.deal.sold_out img:hover {
+    border: 1px dashed #ff3434;
+}
+
+
+/* breadcrumb nav menu */
+
+.breadcrumbs {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    list-style: none;
+}
+
+.breadcrumbs a {
+    text-decoration: none;
+    color: #2d2d2d;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: text-decoration 0.2s ease-in-out;
+}
+
+.breadcrumbs a::after {
+    content: ">";
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    color: #9e9e9e;
+    align-self: ;
+}
+
+/* .breadcrumbs a:last-child::after {
+    content: "";
+} */
+
+
+
+
+/* product page */
+
+
+.product_content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    gap: 3rem;
+}
+
+.product_image {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0rem;
+    gap: 1rem;
+}
+
+.product_image img {
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+    display: block;
+    border: var(--border);
+}
+
+.product_text {
+    width: 100%;
+    padding: 0 0rem;
+    flex-basis: 150%;
+}
+
+.product_text h1 {
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.product_buy {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 1rem;
+    align-items: start;
+}
+
+.product_price {
+    font-size: 1.5rem;
+}
+
+.product_text button {
+    border-radius: 200px;
+    border: var(--border);
+    padding: 0.7rem 1rem;
+    width: fit-content;
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    background: none;
+    color: #2d2d2d;
+    margin-bottom: 3rem;
+}
+
+.product_text button:hover {
+    border: var(--border-hover);
+}
+
+.product_text button:active {
+    background-color: #dedede;
+}
+
