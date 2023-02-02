@@ -5,7 +5,7 @@
     --secondary-color: #2d2d2d;
     --tertiary-color: #ffffff;
     --border: 1px solid #cfcfcf;
-    --border-hover: 1px solid #808080;
+    --border-hover: 1px solid #acacac;
 }
 
 * {
@@ -127,9 +127,12 @@ button {
 .category_flex {
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+}
 
-
+.category_flex:last-of-type {
+    margin-bottom: 0rem;
 }
 
 .category_flex a {
@@ -188,12 +191,14 @@ button {
     height: auto;
     display: block;
     border: var(--border);
-    transition: all 0.15s ease-in-out;
+    transition: border 0.25s ease-in-out, transform 0.28s ease-in-out, box-shadow 0.28s ease-in-out;
 
 }
 
 .product_card img:hover {
-    border: var(--border-hover);
+    border: 1px solid #cfcfcf00;
+    transform: scale3d(1.02, 1.02, 1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.103);
 }
 
 .product_card button {
@@ -204,7 +209,7 @@ button {
     font-size: 1rem;
     font-weight: 400;
     cursor: pointer;
-    transition: all 0.15s ease-in-out;
+    transition: border 0.15s ease-in-out;
     background: none;
     color: #2d2d2d;
 }
@@ -229,11 +234,9 @@ button {
 }
 
 .sold_out button {
-    content: "Sold Out";
     text-decoration: line-through;
     pointer-events: none;
     background-color: #dedede;   
-
 }
 
 .sold_out img {
@@ -241,7 +244,7 @@ button {
 }
 
 .sold_out img:hover {
-    border: 1px dashed #808080;
+    border: 1px dashed #cfcfcf00;
 }
 
 .deal p {
@@ -261,7 +264,7 @@ button {
 }
 
 .deal img:hover {
-    border: 1px solid #ff3434;
+    border: 1px solid #ff474700;
 }
 
 .deal.sold_out p::after {
@@ -273,7 +276,7 @@ button {
 }
 
 .deal.sold_out img:hover {
-    border: 1px dashed #ff3434;
+    border: 1px dashed #ff474700;
 }
 
 
@@ -302,7 +305,6 @@ button {
     margin-left: 0.5rem;
     font-size: 1rem;
     color: #9e9e9e;
-    align-self: ;
 }
 
 /* .breadcrumbs a:last-child::after {
