@@ -1,6 +1,5 @@
-const id = 30183;
+let id = 12872;
 const url = `https://kea-alt-del.dk/t7/api/products/${id}`;
-
 
 function getProduct() {
   fetch(url)
@@ -16,7 +15,7 @@ function showProduct(product) {
   document.querySelector(".product_img").src = `https://kea-alt-del.dk/t7/images/webp/640/${id}.webp`;
   document.querySelector(".product_img").alt = product.productdisplayname;
   document.querySelector(".brand_name").textContent = product.brandname;
-  document.querySelector(".breadcrumb_category").textContent = product.subcategory;
+  document.querySelector(".breadcrumb_category").textContent = product.articletype;
   return product;
 }
 
