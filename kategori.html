@@ -19,62 +19,29 @@
         </nav>
     </header>
     <main>
-        <section>
-            <div class="category_heading">
-                <h1>Apparel</h1>
-                <a href="produktliste.html">View All</a>
-            </div>
-            <div class="category_flex">
-                <a href="produktliste.html">T-Shirts</a>
-                <a href="produktliste.html">Shirts</a>
-                <a href="produktliste.html">Sweaters</a>
-                <a href="produktliste.html">Jackets</a>
-                <a href="produktliste.html">Suits</a>
-            </div>
-            <div class="category_flex">
-                <a href="produktliste.html">Jeans</a>
-                <a href="produktliste.html">Pants</a>
-                <a href="produktliste.html">Shorts</a>
-            </div>
-            <div class="category_flex">
-                <a href="produktliste.html">Underwear</a>
-                <a href="produktliste.html">Swimwear</a>
-            </div>
-        </section>
-        <section>
-            <div class="category_heading">
-                <h1>Footwear</h1>
-                <a href="produktliste.html">View All</a>
-            </div>
-            <div class="category_flex">
-                <a href="produktliste.html">Sneakers</a>
-                <a href="produktliste.html">Loafers</a>
-                <a href="produktliste.html">Sandals</a>
-                <a href="produktliste.html">Slippers</a>
-                <a href="produktliste.html">Boots</a>
-                <a href="produktliste.html">Formal Shoes</a>
+        <template id="category_template">
+            <div class="category_heading_container">
+                <h1 class="category_heading"></h1>
+                <a href="produktliste.html" class="view_all">View All</a>
             </div>
 
-
-        </section>
-        <section>
-            <div class="category_heading">
-                <h1>Accessories</h1>
-                <a href="produktliste.html">View All</a>
-            </div>
             <div class="category_flex">
-                <a href="produktliste.html">Watches</a>
-                <a href="produktliste.html">Bags</a>
-                <a href="produktliste.html">Belts</a>
-                <a href="produktliste.html">Sunglasses</a>
-                <a href="produktliste.html">Hats</a>
-                <a href="produktliste.html">Scarves</a>
-                <a href="produktliste.html">Gloves</a>
+                
             </div>
+
+        </template>
+        <template id="subcategory_template">
+            <a href="" class="subcategory_link"></a>
+        </template>
+
+        <section id="category_container">
+    
         </section>
+
     </main>
     <footer>
         <p>Oliver G.A. 2023</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 </html>
