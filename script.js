@@ -1,120 +1,162 @@
+// declare variables
 const categoryTemplate = document.querySelector("#category_template");
 const subcategoryTemplate = document.querySelector("#subcategory_template");
 const categoriesUrl = `https://kea-alt-del.dk/t7/api/categories`;
 const subcategoriesUrl = `https://kea-alt-del.dk/t7/api/subcategories?category=`;
-
 let categories = {};
 
+const productCardTemplate = document.querySelector("#product_card_template");
+const productGrid = document.querySelector("#product_grid");
+let productsUrl = `https://kea-alt-del.dk/t7/api/products?limit=50`;
+let currentOpenUrl = window.location.href;
+
+let id;
+
+// kategori.html
+
 function getKategorier() {
+  // fetch categories
   fetch(categoriesUrl)
   .then((res) => res.json())
   .then((data) => {
+    // for each category ...
     data.forEach((category) => {
-
+      // replace spaces with dashes
       const safeCategory = category.category.replace(/\s+/g, '-');
-
+      // create an array for each category and add it to the categories object
       categories[safeCategory] = [];
-
+      // clone the category template
       const categoryClone = categoryTemplate.content.cloneNode(true);
+      // add the category name to the category heading and link to the view all link div
       categoryClone.querySelector(".category_heading").innerHTML = category.category;
       categoryClone.querySelector(".view_all").href = `produktliste.html?category=${category.category}`;
+      // give category div an id based on the category name
       categoryClone.querySelector(".category_flex").id = safeCategory;
+      // append the category to the category container
       document.querySelector("#category_container").appendChild(categoryClone);
-
+      // fetch subcategories for each category
       fetch(subcategoriesUrl + category.category)
       .then((res) => res.json())
       .then((subdata) => {
+        // for each subcategory ...
         subdata.forEach((subcategory) => {
+          // add the subcategory to the array for the category
           categories[safeCategory].push(subcategory.subcategory);
         });
+        // addSubcategories() is called after all subcategories have been fetched in each category
         addSubcategories();
       });
-
     });
   });
 }
 
 function addSubcategories() {
+  // for each category in the categories object ...
   for (let category in categories) {
+    // select the category div based on the id
     let categoryDiv = document.querySelector(`#${category}`);
+    // for each subcategory in the array for the category ...
     categories[category].forEach(subcategory => {
+      // if the subcategory link doesn't already exist ...
       if (!categoryDiv.querySelector(`a[href="produktliste.html?subcategory=${subcategory}"]`)) {
+        // clone the subcategory template
         const subcategoryClone = subcategoryTemplate.content.cloneNode(true);
+        // add the subcategory name and link to the subcategory link div
         subcategoryClone.querySelector(".subcategory_link").innerHTML = subcategory;
         subcategoryClone.querySelector(".subcategory_link").href = `produktliste.html?subcategory=${subcategory}`;
+        // append the subcategory to the category div
         categoryDiv.appendChild(subcategoryClone);
       }
     });
   }
 }
 
-const productCardTemplate = document.querySelector("#product_card_template");
-const productGrid = document.querySelector("#product_grid");
-let productsUrl = `https://kea-alt-del.dk/t7/api/products?limit=50`;
-let openUrl = window.location.href;
+// produktliste.html
 
 function getProduktliste() {
-  
-  let params = openUrl.split("?")[1];
-  let subcategoryUrl = params.split("=")[1];
-
+  // get the category name from the url
+  let subcategoryUrl = currentOpenUrl.split("=")[1];
+  // change productsUrl to include the subcategory
   productsUrl = `https://kea-alt-del.dk/t7/api/products?subcategory=${subcategoryUrl}&limit=50`;
+  // replace category heading with subcategory name and replace dashes with spaces
   document.querySelector(".category_name").textContent = subcategoryUrl.replace(/%20/g, " "); 
+  // fetch products
     fetch(productsUrl)
     .then((res) => res.json())
     .then((data) => {
+        // for each product ...
         data.forEach((product) => {
-            console.log(product);
+            // clone the product card template
             const productClone = productCardTemplate.content.cloneNode(true);
+            // add the product image, links, name, and price to the product card
             productClone.querySelector(".product_img").src = `https://kea-alt-del.dk/t7/images/webp/640/${product.id}.webp`;
             productClone.querySelector(".product_card a").href = `produkt.html?id=${product.id}`;
             productClone.querySelector(".product_name").textContent = product.productdisplayname;
             productClone.querySelector(".product_price").textContent = product.price;
+              // if the product is sold out, add the sold out class to the product card
+            if(product.soldout == 1) {
+              document.querySelector(".product_card").classList.add("sold_out");
+            }
+            // append the product card to the product grid
             productGrid.appendChild(productClone);
         });
     });
 }
 
+// produkt.html
 
-
-
-let id = 0;
-let productIdUrl = `https://kea-alt-del.dk/t7/api/products/${id}`;
-
+// get the product id from the url and fetch the product data
 function getProduct() {
+  
+  let productIdUrl;
+
+  // get the product id from the url and split it from the rest of the url
   id = window.location.href.split("=")[1];
-  console.log(id);
+  // change the productsUrl to include the product id
   productIdUrl = `https://kea-alt-del.dk/t7/api/products/${id}`;
-  console.log(productIdUrl)
+  // fetch the product
   fetch(productIdUrl)
     .then((res) => res.json())
+    // show the product
     .then((data) => showProduct(data))
+    // split the description lines into multiple paragraphs
     .then((data) => splitLines(data))
 }
 
+// show the product on the product page
 function showProduct(product) {
   console.log(product)
+  // add the product name, price, image, brand name, and category to the product page
   document.querySelector(".product_name").textContent = product.productdisplayname;
   document.querySelector(".product_price").textContent = product.price;
   document.querySelector(".product_img").src = `https://kea-alt-del.dk/t7/images/webp/640/${id}.webp`;
   document.querySelector(".product_img").alt = product.productdisplayname;
   document.querySelector(".brand_name").textContent = product.brandname;
   document.querySelector(".breadcrumb_category").textContent = product.articletype;
+  // return the product so that the next function can use it
   return product;
 }
 
+// split the description into multiple paragraphs
 function splitLines(product) {
+  // declare a variable for the product description
   const paragraph = product.description;
+  // split the description into an array of lines at the <br /> tags
   const split = paragraph.split("<br />");
 
+  // for each line in the array ...
   split.forEach((line) => {
+    // create a new paragraph element
     const p = document.createElement("p");
+    // add the line to the paragraph
     p.innerHTML = line;
+    // append the paragraph to the product description div
     document.querySelector(".product_description").appendChild(p);
     }
-  );
+  )
 }
 
+// on page load, run the appropriate function based on the url
 window.onload = function() {
   if(window.location.href.includes("produktliste.html")) {
       getProduktliste();
