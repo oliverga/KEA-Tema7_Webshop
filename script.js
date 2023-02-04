@@ -3,20 +3,18 @@ const subcategoryTemplate = document.querySelector("#subcategory_template");
 const categoriesUrl = `https://kea-alt-del.dk/t7/api/categories`;
 const subcategoriesUrl = `https://kea-alt-del.dk/t7/api/subcategories?category=`;
 
-let apiUrl = ``;
-// create categories object with subcategories array
 let categories = {};
-
 
 function getKategorier() {
   fetch(categoriesUrl)
   .then((res) => res.json())
   .then((data) => {
     data.forEach((category) => {
-      // console.log(category);
-      // create categories object with subcategories array
+
       const safeCategory = category.category.replace(/\s+/g, '-');
+
       categories[safeCategory] = [];
+
       const categoryClone = categoryTemplate.content.cloneNode(true);
       categoryClone.querySelector(".category_heading").innerHTML = category.category;
       categoryClone.querySelector(".view_all").href = `produktliste.html?category=${category.category}`;
@@ -29,7 +27,6 @@ function getKategorier() {
         subdata.forEach((subcategory) => {
           categories[safeCategory].push(subcategory.subcategory);
         });
-        console.log(categories);
         addSubcategories();
       });
 
@@ -40,7 +37,6 @@ function getKategorier() {
 function addSubcategories() {
   for (let category in categories) {
     let categoryDiv = document.querySelector(`#${category}`);
-    console.log(categoryDiv)
     categories[category].forEach(subcategory => {
       if (!categoryDiv.querySelector(`a[href="produktliste.html?subcategory=${subcategory}"]`)) {
         const subcategoryClone = subcategoryTemplate.content.cloneNode(true);
@@ -52,37 +48,18 @@ function addSubcategories() {
   }
 }
 
-
-// function addSubcategories() {
-//   for (let category in categories) {
-//     console.log(category);
-//     let categoryDiv = document.querySelector(`#${category}`);
-//     categories[category].forEach((subcategory) => {
-//       const subcategoryClone = subcategoryTemplate.content.cloneNode(true);
-//       subcategoryClone.querySelector(".subcategory_link").innerHTML = subcategory;
-//       subcategoryClone.querySelector(".subcategory_link").href = `produktliste.html?subcategory=${subcategory}`;
-//       categoryDiv.appendChild(subcategoryClone);
-//     });
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
 const productCardTemplate = document.querySelector("#product_card_template");
 const productGrid = document.querySelector("#product_grid");
-
-const productsUrl = `https://kea-alt-del.dk/t7/api/products?limit=50`;
+let productsUrl = `https://kea-alt-del.dk/t7/api/products?limit=50`;
+let openUrl = window.location.href;
 
 function getProduktliste() {
+  
+  let params = openUrl.split("?")[1];
+  let subcategoryUrl = params.split("=")[1];
+
+  productsUrl = `https://kea-alt-del.dk/t7/api/products?subcategory=${subcategoryUrl}&limit=50`;
+  document.querySelector(".category_name").textContent = subcategoryUrl.replace(/%20/g, " "); 
     fetch(productsUrl)
     .then((res) => res.json())
     .then((data) => {
@@ -90,6 +67,7 @@ function getProduktliste() {
             console.log(product);
             const productClone = productCardTemplate.content.cloneNode(true);
             productClone.querySelector(".product_img").src = `https://kea-alt-del.dk/t7/images/webp/640/${product.id}.webp`;
+            productClone.querySelector(".product_card a").href = `produkt.html?id=${product.id}`;
             productClone.querySelector(".product_name").textContent = product.productdisplayname;
             productClone.querySelector(".product_price").textContent = product.price;
             productGrid.appendChild(productClone);
@@ -100,18 +78,14 @@ function getProduktliste() {
 
 
 
-
-
-
-
-
-
-
-
-let id = 12538;
+let id = 0;
 let productIdUrl = `https://kea-alt-del.dk/t7/api/products/${id}`;
 
 function getProduct() {
+  id = window.location.href.split("=")[1];
+  console.log(id);
+  productIdUrl = `https://kea-alt-del.dk/t7/api/products/${id}`;
+  console.log(productIdUrl)
   fetch(productIdUrl)
     .then((res) => res.json())
     .then((data) => showProduct(data))

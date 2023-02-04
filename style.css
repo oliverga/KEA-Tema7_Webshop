@@ -31,6 +31,7 @@ img {
 header {
     background-color: rgb(255, 255, 255);
     filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.129));
+    margin-bottom: 1rem;
 }
 
 header nav ul {
@@ -107,10 +108,6 @@ section:last-child {
     margin-bottom: 10rem;
 }
 
-section:first-child {
-    margin-top: 2rem;
-}
-
 button {
     transform: translateY(-0.1rem);
 }
@@ -181,11 +178,11 @@ button:active {
     justify-content: start;
     align-items: center;
     gap: 0.6rem;
-    margin-top: 3rem;
+    margin-top: 2rem
 }
 
 .category_heading_container:first-of-type {
-    margin-top: 3rem;
+    margin-top: 0
 }
 
 .view_all {
@@ -229,7 +226,7 @@ button:active {
 #product_grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 1.5rem;
+    grid-gap: 1.8rem;
 }
 
 .product_card {
@@ -248,7 +245,7 @@ button:active {
 }
 
 .product_card .product_price {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 400;
     margin-bottom: 0.8rem;
 }
