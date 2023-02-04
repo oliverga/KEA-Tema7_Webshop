@@ -3,7 +3,8 @@ const categoryTemplate = document.querySelector("#category_template");
 const subcategoryTemplate = document.querySelector("#subcategory_template");
 const categoriesUrl = `https://kea-alt-del.dk/t7/api/categories`;
 const subcategoriesUrl = `https://kea-alt-del.dk/t7/api/subcategories?category=`;
-let categories = {};
+const categoryContainer = document.querySelector("#category_container");
+let categoriesObject = {};
 
 const productCardTemplate = document.querySelector("#product_card_template");
 const productGrid = document.querySelector("#product_grid");
@@ -24,7 +25,7 @@ function getKategorier() {
       // replace spaces with dashes
       const safeCategory = category.category.replace(/\s+/g, '-');
       // create an array for each category and add it to the categories object
-      categories[safeCategory] = [];
+      categoriesObject[safeCategory] = [];
       // clone the category template
       const categoryClone = categoryTemplate.content.cloneNode(true);
       // add the category name to the category heading and link to the view all link div
@@ -33,7 +34,7 @@ function getKategorier() {
       // give category div an id based on the category name
       categoryClone.querySelector(".category_flex").id = safeCategory;
       // append the category to the category container
-      document.querySelector("#category_container").appendChild(categoryClone);
+      categoryContainer.appendChild(categoryClone);
       // fetch subcategories for each category
       fetch(subcategoriesUrl + category.category)
       .then((res) => res.json())
@@ -41,35 +42,53 @@ function getKategorier() {
         // for each subcategory ...
         subdata.forEach((subcategory) => {
           // add the subcategory to the array for the category
-          categories[safeCategory].push(subcategory.subcategory);
+          categoriesObject[safeCategory].push(subcategory.subcategory);
         });
         // addSubcategories() is called after all subcategories have been fetched in each category
-        addSubcategories();
+        // addSubcategories();
+        for (let category in categoriesObject) {
+          // select the category div based on the id
+          let categoryDiv = document.querySelector(`#${category}`);
+          // for each subcategory in the array for the category ...
+          categoriesObject[category].forEach(subcategory => {
+            // if the subcategory link doesn't already exist ...
+            if (!categoryDiv.querySelector(`a[href="produktliste.html?subcategory=${subcategory}"]`)) {
+              // clone the subcategory template
+              const subcategoryClone = subcategoryTemplate.content.cloneNode(true);
+              // add the subcategory name and link to the subcategory link div
+              subcategoryClone.querySelector(".subcategory_link").innerHTML = subcategory;
+              subcategoryClone.querySelector(".subcategory_link").href = `produktliste.html?subcategory=${subcategory}`;
+              // append the subcategory to the category div
+              categoryDiv.appendChild(subcategoryClone);
+            }
+          });
+        }
+        console.log(categoriesObject)
       });
     });
   });
 }
 
-function addSubcategories() {
-  // for each category in the categories object ...
-  for (let category in categories) {
-    // select the category div based on the id
-    let categoryDiv = document.querySelector(`#${category}`);
-    // for each subcategory in the array for the category ...
-    categories[category].forEach(subcategory => {
-      // if the subcategory link doesn't already exist ...
-      if (!categoryDiv.querySelector(`a[href="produktliste.html?subcategory=${subcategory}"]`)) {
-        // clone the subcategory template
-        const subcategoryClone = subcategoryTemplate.content.cloneNode(true);
-        // add the subcategory name and link to the subcategory link div
-        subcategoryClone.querySelector(".subcategory_link").innerHTML = subcategory;
-        subcategoryClone.querySelector(".subcategory_link").href = `produktliste.html?subcategory=${subcategory}`;
-        // append the subcategory to the category div
-        categoryDiv.appendChild(subcategoryClone);
-      }
-    });
-  }
-}
+// function addSubcategories() {
+//   // for each category in the categories object ...
+//   for (let category in categoriesObject) {
+//     // select the category div based on the id
+//     let categoryDiv = document.querySelector(`#${category}`);
+//     // for each subcategory in the array for the category ...
+//     categoriesObject[category].forEach(subcategory => {
+//       // if the subcategory link doesn't already exist ...
+//       if (!categoryDiv.querySelector(`a[href="produktliste.html?subcategory=${subcategory}"]`)) {
+//         // clone the subcategory template
+//         const subcategoryClone = subcategoryTemplate.content.cloneNode(true);
+//         // add the subcategory name and link to the subcategory link div
+//         subcategoryClone.querySelector(".subcategory_link").innerHTML = subcategory;
+//         subcategoryClone.querySelector(".subcategory_link").href = `produktliste.html?subcategory=${subcategory}`;
+//         // append the subcategory to the category div
+//         categoryDiv.appendChild(subcategoryClone);
+//       }
+//     });
+//   }
+// }
 
 // produktliste.html
 
@@ -93,10 +112,12 @@ function getProduktliste() {
             productClone.querySelector(".product_card a").href = `produkt.html?id=${product.id}`;
             productClone.querySelector(".product_name").textContent = product.productdisplayname;
             productClone.querySelector(".product_price").textContent = product.price;
+
               // if the product is sold out, add the sold out class to the product card
-            if(product.soldout == 1) {
-              document.querySelector(".product_card").classList.add("sold_out");
-            }
+            // if(product.soldout == 1) {
+            //   document.querySelector(".product_card").classList.add("sold_out");
+            // }
+
             // append the product card to the product grid
             productGrid.appendChild(productClone);
         });
@@ -118,9 +139,9 @@ function getProduct() {
   fetch(productIdUrl)
     .then((res) => res.json())
     // show the product
-    .then((data) => showProduct(data))
+    .then((product) => showProduct(product))
     // split the description lines into multiple paragraphs
-    .then((data) => splitLines(data))
+    .then((product) => splitLines(product))
 }
 
 // show the product on the product page
@@ -132,7 +153,8 @@ function showProduct(product) {
   document.querySelector(".product_img").src = `https://kea-alt-del.dk/t7/images/webp/640/${id}.webp`;
   document.querySelector(".product_img").alt = product.productdisplayname;
   document.querySelector(".brand_name").textContent = product.brandname;
-  document.querySelector(".breadcrumb_category").textContent = product.articletype;
+  document.querySelector(".breadcrumb_category").textContent = product.subcategory;
+  document.querySelector(".breadcrumb_category").href = `produktliste.html?subcategory=${product.subcategory}`;
   // return the product so that the next function can use it
   return product;
 }
