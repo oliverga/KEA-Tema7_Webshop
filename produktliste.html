@@ -14,20 +14,25 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="kategori.html">Categories</a></li>
                 <li><a href="">Brands</a></li>
-                <li><a href="">Seasons</a></li>
+                <li><a href="">Seassons</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <section>
-            <h1 class="category_name">CATEGORY NAME</h1>
+            <h1 class="category_name"></h1>
             <div id="product_grid">
                 
                 <template id="product_card_template">
                     <div class="product_card"> 
                         <a href="produkt.html"><img src="https://kea-alt-del.dk/t7/images/webp/1000/1533.webp" alt="" class="product_img"></a>
                         <h3 class="product_name">produktnavn</h3>
-                        <p class="product_price">pris</p>
+                        <div class="price_container">
+                            <p class="product_price">pris </p>
+                            <p class="deal_price"></p>
+                            <p class="sold_out_text"></p>
+                        </div>
+
                         <!-- <button>Add to Cart</button> -->
                     </div>
                 </template>

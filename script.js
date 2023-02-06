@@ -31,9 +31,9 @@ function getKategorier() {
       // add the category name to the category heading and link to the view all link div
       categoryClone.querySelector(".category_heading").innerHTML = category.category;
       categoryClone.querySelector(".view_all").href = `produktliste.html?category=${category.category}`;
-      // give category div an id based on the category name
+      // give category flex div an id based on the category name
       categoryClone.querySelector(".category_flex").id = safeCategory;
-      // append the category to the category container
+      // append the category stuff to the category container
       categoryContainer.appendChild(categoryClone);
       // fetch subcategories for each category
       fetch(subcategoriesUrl + category.category)
@@ -44,8 +44,7 @@ function getKategorier() {
           // add the subcategory to the array for the category
           categoriesObject[safeCategory].push(subcategory.subcategory);
         });
-        // addSubcategories() is called after all subcategories have been fetched in each category
-        // addSubcategories();
+        // for each category in categoriesObject... 
         for (let category in categoriesObject) {
           // select the category div based on the id
           let categoryDiv = document.querySelector(`#${category}`);
@@ -63,10 +62,11 @@ function getKategorier() {
             }
           });
         }
-        console.log(categoriesObject)
       });
     });
+    console.log(categoriesObject)
   });
+  
 }
 
 // function addSubcategories() {
@@ -105,6 +105,7 @@ function getProduktliste() {
     .then((data) => {
         // for each product ...
         data.forEach((product) => {
+            console.log(product)
             // clone the product card template
             const productClone = productCardTemplate.content.cloneNode(true);
             // add the product image, links, name, and price to the product card
@@ -112,11 +113,15 @@ function getProduktliste() {
             productClone.querySelector(".product_card a").href = `produkt.html?id=${product.id}`;
             productClone.querySelector(".product_name").textContent = product.productdisplayname;
             productClone.querySelector(".product_price").textContent = product.price;
+            if(product.discount) {
+              productClone.querySelector(".product_card").classList.add("deal");
+              productClone.querySelector(".deal_price").textContent = "₹ " + Math.round(product.price - (product.price * (product.discount / 100)));
+            }
+            if(product.soldout) {
+              productClone.querySelector(".product_card").classList.add("sold_out");
+              productClone.querySelector(".sold_out_text").textContent = "Sold Out";
+            }
 
-              // if the product is sold out, add the sold out class to the product card
-            // if(product.soldout == 1) {
-            //   document.querySelector(".product_card").classList.add("sold_out");
-            // }
 
             // append the product card to the product grid
             productGrid.appendChild(productClone);
@@ -153,8 +158,18 @@ function showProduct(product) {
   document.querySelector(".product_img").src = `https://kea-alt-del.dk/t7/images/webp/640/${id}.webp`;
   document.querySelector(".product_img").alt = product.productdisplayname;
   document.querySelector(".brand_name").textContent = product.brandname;
+  document.querySelector(".brand_name").href = `brands.html?brandname=${product.brandname}`;
   document.querySelector(".breadcrumb_category").textContent = product.subcategory;
   document.querySelector(".breadcrumb_category").href = `produktliste.html?subcategory=${product.subcategory}`;
+  document.querySelector(".breadcrumb_articletype").textContent = product.articletype;
+  document.querySelector(".breadcrumb_articletype").href = `produktliste.html?articletype=${product.articletype}`;
+  if(product.discount) {
+    document.querySelector(".deal_price").textContent = "₹ " + Math.round(product.price - (product.price * (product.discount / 100)));
+  }
+  if(product.soldout) {
+    document.querySelector(".product_buy").classList.add("sold_out");
+    document.querySelector(".sold_out_text").textContent = "Sold Out";
+  }
   // return the product so that the next function can use it
   return product;
 }

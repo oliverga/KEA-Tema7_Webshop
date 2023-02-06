@@ -3,8 +3,8 @@
 :root {
     --basecolor: #2d2d2d4a;
     --border: 1px solid var(--basecolor);
-    --sale-color: #ff0000;
-    --sale-color-muted: #f47a7a8e;
+    --sale-color: #0551e8a9;
+    --sale-color-muted: #0551e868;
     --primary-color: #2d2d2d;
 }
 
@@ -132,9 +132,9 @@ button:hover {
     border: 1px solid var(--primary-color);
 }
 
-button:active {
+/* button:active {
     background-color: var(--primary-color);
-}
+} */
 
 /* breadcrumb nav menu */
 
@@ -225,6 +225,11 @@ button:active {
     border: 1px solid var(--primary-color);
 }
 
+
+
+
+
+
 #product_grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -238,12 +243,23 @@ button:active {
     margin-bottom: 1rem;
 }
 
+
 .product_card .product_name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 400;
     margin-top: 0.8rem;
     margin-bottom: 0.5rem;
     word-wrap: break-word;
+}
+
+
+.price_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 0.8rem;
+    font-size: 1.1rem;
 }
 
 .product_card .product_price {
@@ -263,31 +279,28 @@ button:active {
     display: block;
     border: var(--border);
     transition: border 0.2s ease-in-out;
-
-
 }
 
 .product_card .product_img:hover {
     border: 1px solid var(--primary-color);
-
 }
-
 
 .sold_out .product_price {
     text-decoration: line-through;
 }
 
-.sold_out .product_price::after {
-    display: inline-block;
-    content: "Sold Out";
-    margin-left: 0.5rem;
-    text-decoration: none;
+.sold_out_text {
+    font-style: italic;
+}
+
+.sold_out .deal_price {
+    text-decoration: line-through;
 }
 
 .sold_out button {
     text-decoration: line-through;
     pointer-events: none;
-    background-color: #bcbcbc4f;   
+    background-color: #6c6c6c4f;   
 }
 
 .sold_out .product_img {
@@ -302,12 +315,8 @@ button:active {
     text-decoration: line-through;
 }
 
-.deal .product_price::after {
-    display: inline-block;
-    content: "---";
+.deal_price {
     color: var(--sale-color);
-    margin-left: 0.5rem;
-    text-decoration: none;
 }
 
 .deal .product_img {
@@ -316,10 +325,6 @@ button:active {
 
 .deal .product_img:hover {
     border: 1px solid var(--primary-color);
-}
-
-.deal.sold_out .product_price::after {
-    content: "--- Sold Out";
 }
 
 .deal.sold_out .product_img {
@@ -389,9 +394,6 @@ button:active {
     justify-content: start;
     gap: 1rem;
     align-items: start;
-}
-
-.product_content .product_price {
     font-size: 1.5rem;
 }
 
