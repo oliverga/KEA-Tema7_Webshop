@@ -14,14 +14,28 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="kategori.html">Categories</a></li>
                 <li><a href="brands.html">Brands</a></li>
-                <li><a href="">Seassons</a></li>
+                <li>
+                    <div class="dropdown">
+                        <button>Seasons</button>
+                        <div class="dropdown-content">
+                            <a href="produktliste.html?season=Spring">Spring</a>
+                            <a href="produktliste.html?season=Summer">Summer</a>
+                            <a href="produktliste.html?season=Fall">Fall</a>
+                            <a href="produktliste.html?season=Winter">Winter</a>
+                        </div>
+                      </div>
+                </li>
             </ul>
         </nav>
     </header>
     <main class="product_list_main">
-        <option value=""></option>
         <section>
             <h1 class="category_name"></h1>
+            <template id="article_type_template">
+                <a href="" class="article_type_link"></a>
+            </template>
+            <div class="category_flex" id="article_type_container">
+            </div>
             <div id="product_grid">
                 <template id="product_card_template">
                     <div class="product_card"> 
