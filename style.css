@@ -3,7 +3,7 @@
 :root {
     --basecolor: #2d2d2d4a;
     --border: 1px solid var(--basecolor);
-    --sale-color: #0551e8a9;
+    --sale-color: #0551e8de;
     --sale-color-muted: #0551e868;
     --primary-color: #2d2d2d;
 }
@@ -167,7 +167,7 @@ button:hover {
     content: ">";
     margin-left: 0.5rem;
     font-size: 1rem;
-    color: #94b1d5;
+    color: var(--basecolor);
 }
 
 .breadcrumbs li {
@@ -226,9 +226,44 @@ button:hover {
 }
 
 
+.brand_link {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    text-decoration: none;
+    color: #2d2d2d;
+    font-size: 1rem;
+    font-weight: 400;
+    border: var(--border);
+    transition: border 0.2s ease-in-out;
+    background-color: #ffffff;
+}
+
+.brand_link:hover {
+    border: 1px solid var(--primary-color);
+}
+
+.brand_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
 
 
 
+
+
+
+
+
+
+.product_list_main {
+    display: flex;
+    flex-direction: column;
+}
 
 #product_grid {
     display: grid;
@@ -320,7 +355,7 @@ button:hover {
 }
 
 .deal .product_img {
-    border: 1px solid var(--sale-color);
+    border: 1px solid #2c67dea3;
 }
 
 .deal .product_img:hover {
@@ -334,6 +369,21 @@ button:hover {
 .deal.sold_out .product_img:hover {
     border: 1px dashed var(--primary-color);
 }
+
+button#next {
+    align-self: center;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -401,6 +451,10 @@ button:hover {
     content: "₹ ";
 }
 
+.deal .product_price {
+    text-decoration: line-through;
+}
+
 .product_content .product_description {
     text-align: justify;
     width: 100%;
@@ -416,10 +470,6 @@ button:hover {
     padding-top: 1rem;
 }
 
-
-/* .product_content .product_description p:first-of-type {
-    margin-bottom: 2rem;
-} */
 
 .product_content .product_description p span {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

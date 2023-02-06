@@ -13,16 +13,16 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="kategori.html">Categories</a></li>
-                <li><a href="">Brands</a></li>
+                <li><a href="brands.html">Brands</a></li>
                 <li><a href="">Seassons</a></li>
             </ul>
         </nav>
     </header>
-    <main>
+    <main class="product_list_main">
+        <option value=""></option>
         <section>
             <h1 class="category_name"></h1>
             <div id="product_grid">
-                
                 <template id="product_card_template">
                     <div class="product_card"> 
                         <a href="produkt.html"><img src="https://kea-alt-del.dk/t7/images/webp/1000/1533.webp" alt="" class="product_img"></a>
@@ -32,12 +32,11 @@
                             <p class="deal_price"></p>
                             <p class="sold_out_text"></p>
                         </div>
-
-                        <!-- <button>Add to Cart</button> -->
                     </div>
                 </template>
             </div>
         </section>
+        <button id="next">Load more</button>
     </main>
     <footer>
         <p>Oliver G.A. 2023</p>

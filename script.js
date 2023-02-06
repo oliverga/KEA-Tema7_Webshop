@@ -10,6 +10,7 @@ const productCardTemplate = document.querySelector("#product_card_template");
 const productGrid = document.querySelector("#product_grid");
 let productsUrl = `https://kea-alt-del.dk/t7/api/products?limit=50`;
 let currentOpenUrl = window.location.href;
+let startIndex = 0;
 
 let id;
 
@@ -93,19 +94,23 @@ function getKategorier() {
 // produktliste.html
 
 function getProduktliste() {
+  
   // get the category name from the url
   let subcategoryUrl = currentOpenUrl.split("=")[1];
   // change productsUrl to include the subcategory
-  productsUrl = `https://kea-alt-del.dk/t7/api/products?subcategory=${subcategoryUrl}&limit=50`;
+  productsUrl = `https://kea-alt-del.dk/t7/api/products?subcategory=${subcategoryUrl}&limit=1000`;
   // replace category heading with subcategory name and replace dashes with spaces
   document.querySelector(".category_name").textContent = subcategoryUrl.replace(/%20/g, " "); 
   // fetch products
     fetch(productsUrl)
     .then((res) => res.json())
     .then((data) => {
+        let items = data.slice(startIndex, startIndex + 50);
         // for each product ...
-        data.forEach((product) => {
+        items.forEach((product) => {
             console.log(product)
+            
+
             // clone the product card template
             const productClone = productCardTemplate.content.cloneNode(true);
             // add the product image, links, name, and price to the product card
@@ -128,6 +133,34 @@ function getProduktliste() {
         });
     });
 }
+
+const brandsUrl = "https://kea-alt-del.dk/t7/api/brands";
+const brandContainer = document.querySelector(".brand_container");
+const brandTemplate = document.querySelector("#brand_template");
+
+function getBrands() {
+  // fetch brands
+  fetch(brandsUrl)
+  .then((res) => res.json())
+  .then((data) => {
+  data.sort((a, b) => (a.brandname > b.brandname) ? 1 : -1);
+    // for each brand ...
+    data.forEach((brand) => {
+      console.log(brand)
+      // clone the brand template
+      const brandClone = brandTemplate.content.cloneNode(true);
+      // add the brand name and link to the brand link div
+      brandClone.querySelector(".brand_link").textContent = brand.brandname;
+      brandClone.querySelector(".brand_link").href = `produktliste.html?brand=${brand.brandname}`;
+      // append the brand to the brand container
+      brandContainer.appendChild(brandClone);
+    });
+  });
+}
+
+
+
+
 
 // produkt.html
 
@@ -161,9 +194,10 @@ function showProduct(product) {
   document.querySelector(".brand_name").href = `brands.html?brandname=${product.brandname}`;
   document.querySelector(".breadcrumb_category").textContent = product.subcategory;
   document.querySelector(".breadcrumb_category").href = `produktliste.html?subcategory=${product.subcategory}`;
-  document.querySelector(".breadcrumb_articletype").textContent = product.articletype;
-  document.querySelector(".breadcrumb_articletype").href = `produktliste.html?articletype=${product.articletype}`;
+  // document.querySelector(".breadcrumb_articletype").textContent = product.articletype;
+  // document.querySelector(".breadcrumb_articletype").href = `produktliste.html?articletype=${product.articletype}`;
   if(product.discount) {
+    document.querySelector(".product_buy").classList.add("deal");
     document.querySelector(".deal_price").textContent = "₹ " + Math.round(product.price - (product.price * (product.discount / 100)));
   }
   if(product.soldout) {
@@ -196,12 +230,19 @@ function splitLines(product) {
 // on page load, run the appropriate function based on the url
 window.onload = function() {
   if(window.location.href.includes("produktliste.html")) {
+    document.getElementById("next").addEventListener("click", function () {
+      startIndex += 50;
       getProduktliste();
+    });
+    getProduktliste();
   }
   else if(window.location.href.includes("kategori.html")) {
       getKategorier();
   }
   else if(window.location.href.includes("produkt.html")) {
       getProduct();
+  }
+  else if(window.location.href.includes("brands.html")) {
+    getBrands();
   }
 }
