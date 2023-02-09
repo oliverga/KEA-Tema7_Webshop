@@ -21,9 +21,11 @@ const brandTemplate = document.querySelector("#brand_template");
 let currentOpenUrl = window.location.href;
 let startIndex = 0;
 
-let itemsPerPage = 50;
+let itemsPerPage = 25;
 
 let id;
+
+let itemUrl;
 
 // kategori.html
 
@@ -76,7 +78,6 @@ function getCategories() {
         }
       });
     });
-    console.log(categoriesObject)
   });
   
 }
@@ -85,7 +86,6 @@ function getCategories() {
 // produktliste.html
 
 function displayProducts () {
-  console.log(productsUrl)
   fetch(productsUrl)
   .then((res) => res.json())
   .then((data) => {
@@ -117,13 +117,12 @@ function displayProducts () {
 function getProductsBySubcategory() {
   
   // get the category name from the url
-  let subcategoryUrl = currentOpenUrl.split("=")[1];
   // change productsUrl to include the subcategory
-  productsUrl = `https://kea-alt-del.dk/t7/api/products?subcategory=${subcategoryUrl}&limit=1000`;
+  productsUrl = `https://kea-alt-del.dk/t7/api/products?subcategory=${itemUrl}&limit=1000`;
   // replace category heading with subcategory name and replace dashes with spaces
-  document.querySelector(".category_name").textContent = subcategoryUrl.replace(/%20/g, " "); 
+  document.querySelector(".category_name").textContent = itemUrl.replace(/%20/g, " "); 
   // fetch article types for the subcategory and display them in category_flex div
-  articletypeUrl = `https://kea-alt-del.dk/t7/api/articletypes?subcategory=${subcategoryUrl}`;
+  articletypeUrl = `https://kea-alt-del.dk/t7/api/articletypes?subcategory=${itemUrl}`;
   fetch(articletypeUrl)
   .then((res) => res.json())
   .then((data) => {
@@ -132,7 +131,7 @@ function getProductsBySubcategory() {
       // replace spaces in articletype name with %20 in order to compare with subcategoryUrl
       articletype.articletype = articletype.articletype.replace(/ /g, "%20");
       // if articletype is not the same as the subcategory ...
-      if (articletype.articletype != subcategoryUrl) {
+      if (articletype.articletype != itemUrl) {
         // replace %20 with spaces in articletype name
         articletype.articletype = articletype.articletype.replace(/%20/g, " ");
         console.log(articletype.articletype)
@@ -152,39 +151,34 @@ function getProductsBySubcategory() {
 
 function getProductsByBrand () {
   // get the brand name from the url
-  let brandUrl = currentOpenUrl.split("=")[1];
   // change productsUrl to include the brand
-  productsUrl = `https://kea-alt-del.dk/t7/api/products?brandname=${brandUrl}&limit=1000`;
+  productsUrl = `https://kea-alt-del.dk/t7/api/products?brandname=${itemUrl}&limit=1000`;
   // replace category heading with brand name and replace dashes with spaces
-  document.querySelector(".category_name").textContent = brandUrl.replace(/%20/g, " "); 
+  document.querySelector(".category_name").textContent = itemUrl.replace(/%20/g, " "); 
     // fetch and display products
   displayProducts();
  }
 
 function getProductsByArticletype () {
   // get the articletype name from the url
-  let articletypeUrl = currentOpenUrl.split("=")[1];
-  console.log(articletypeUrl)
   // change productsUrl to include the articletype
-  productsUrl = `https://kea-alt-del.dk/t7/api/products?articletype=${articletypeUrl}&limit=1000`;
+  productsUrl = `https://kea-alt-del.dk/t7/api/products?articletype=${itemUrl}&limit=1000`;
   // replace category heading with articletype name and replace dashes with spaces
-  document.querySelector(".category_name").textContent = articletypeUrl.replace(/%20/g, " ");
+  document.querySelector(".category_name").textContent = itemUrl.replace(/%20/g, " ");
   // fetch and display products
   displayProducts();
 }
 
 function getProductsByCategory () {
-  let categoryUrl = currentOpenUrl.split("=")[1];
-  productsUrl = `https://kea-alt-del.dk/t7/api/products?category=${categoryUrl}&limit=1000`;
-  document.querySelector(".category_name").textContent = categoryUrl.replace(/%20/g, " ");
+  productsUrl = `https://kea-alt-del.dk/t7/api/products?category=${itemUrl}&limit=1000`;
+  document.querySelector(".category_name").textContent = itemUrl.replace(/%20/g, " ");
   displayProducts();
 }
 
 
 function getProductsBySeason () {
-  let seasonUrl = currentOpenUrl.split("=")[1];
-  productsUrl = `https://kea-alt-del.dk/t7/api/products?season=${seasonUrl}&limit=1000`;
-  document.querySelector(".category_name").textContent = seasonUrl.replace(/%20/g, " ");
+  productsUrl = `https://kea-alt-del.dk/t7/api/products?season=${itemUrl}&limit=1000`;
+  document.querySelector(".category_name").textContent = itemUrl.replace(/%20/g, " ");
   displayProducts();
 }
 
@@ -199,7 +193,6 @@ function getBrands() {
   data.sort((a, b) => (a.brandname > b.brandname) ? 1 : -1);
     // for each brand ...
     data.forEach((brand) => {
-      console.log(brand)
       // clone the brand template
       const brandClone = brandTemplate.content.cloneNode(true);
       // add the brand name and link to the brand link div
@@ -236,7 +229,6 @@ function getProduct() {
 
 // show the product on the product page
 function showProduct(product) {
-  console.log(product)
   // add the product name, price, image, brand name, and category to the product page
   document.querySelector(".product_name").textContent = product.productdisplayname;
   document.querySelector(".product_price").textContent = product.price;
@@ -246,8 +238,15 @@ function showProduct(product) {
   document.querySelector(".brand_name").href = `produktliste.html?brand=${product.brandname}`;
   document.querySelector(".breadcrumb_category").textContent = product.subcategory;
   document.querySelector(".breadcrumb_category").href = `produktliste.html?subcategory=${product.subcategory}`;
+  // if articletype is not the same as subcategory, add it to the breadcrumb
+  if(product.articletype !== product.subcategory) {
   document.querySelector(".breadcrumb_articletype").textContent = product.articletype;
   document.querySelector(".breadcrumb_articletype").href = `produktliste.html?articletype=${product.articletype}`;
+  }
+  // if it is the same, hide the articletype breadcrumb
+  if(product.articletype === product.subcategory) {
+    document.querySelector(".breadcrumb_articletype").classList.add("hide");
+  }
   if(product.discount) {
     document.querySelector(".product_buy").classList.add("deal");
     document.querySelector(".deal_price").textContent = "₹ " + Math.round(product.price - (product.price * (product.discount / 100)));
@@ -266,7 +265,6 @@ function splitLines(product) {
   const paragraph = product.description;
   // split the description into an array of lines at the <br /> tags
   const split = paragraph.split("<br />");
-
   // for each line in the array ...
   split.forEach((line) => {
     // create a new paragraph element
@@ -279,8 +277,63 @@ function splitLines(product) {
   )
 }
 
-// on page load, run the appropriate function based on the url
+
+
+// window.onload = function() {
+//   switch(true) {
+//   case currentOpenUrl.includes("?subcategory="):
+//   document.getElementById("next").addEventListener("click", function () {
+//   startIndex += itemsPerPage;
+//   getProductsBySubcategory();
+//   });
+//   getProductsBySubcategory();
+//   break;
+//   case currentOpenUrl.includes("brand="):
+//   document.getElementById("next").addEventListener("click", function () {
+//   startIndex += itemsPerPage;
+//   getProductsByBrand();
+//   });
+//   getProductsByBrand();
+//   break;
+//   case currentOpenUrl.includes("articletype="):
+//   document.getElementById("next").addEventListener("click", function () {
+//     startIndex += itemsPerPage;
+//     getProductsByArticletype();
+//   });
+//   getProductsByArticletype();
+//   break;
+//   case currentOpenUrl.includes("category="):
+//   document.getElementById("next").addEventListener("click", function () {
+//     startIndex += itemsPerPage;
+//     getProductsByCategory();
+//   });
+//   getProductsByCategory();
+//   break;
+//   case currentOpenUrl.includes("season="):
+//   document.getElementById("next").addEventListener("click", function () {
+//     startIndex += itemsPerPage;
+//     getProductsBySeason();
+//   });
+//   getProductsBySeason();
+//   break;
+//   case currentOpenUrl.includes("kategori.html"):
+//     getCategories();
+//     break;
+//   case currentOpenUrl.includes("produkt.html"):
+//     getProduct();
+//     break;
+//   case currentOpenUrl.includes("brands.html"):
+//     getBrands();
+//     break;
+//   }
+// }
+
+
+// on page load, get the current url parameter run the appropriate function based on the url 
 window.onload = function() {
+
+  itemUrl = currentOpenUrl.split("=")[1];
+
   if(currentOpenUrl.includes("?subcategory=")) {
   document.getElementById("next").addEventListener("click", function () {
     startIndex += itemsPerPage;
@@ -289,7 +342,7 @@ window.onload = function() {
   getProductsBySubcategory();
   }
 
-  else if(currentOpenUrl.includes("brand=")) {
+  else if(currentOpenUrl.includes("?brand=")) {
   document.getElementById("next").addEventListener("click", function () {
     startIndex += itemsPerPage;
     getProductsByBrand();
@@ -297,7 +350,7 @@ window.onload = function() {
   getProductsByBrand();
   }
 
-  else if(currentOpenUrl.includes("articletype=")) {
+  else if(currentOpenUrl.includes("?articletype=")) {
   document.getElementById("next").addEventListener("click", function () {
     startIndex += itemsPerPage;
     getProductsByArticletype();
