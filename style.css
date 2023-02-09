@@ -114,7 +114,7 @@ h3 {
 }
 
 section {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 
 }
 
@@ -206,15 +206,6 @@ button:hover {
 
 
 
-.homepage_h1 {
-    font-size: 5rem;
-    font-weight: 100;
-    margin-bottom: 1rem;
-    text-align: center;
-    font-family: 'EB Garamond';
-    width: fit-content;
-    z-index: -1;
-}
 
 
 
@@ -222,7 +213,7 @@ button:hover {
 
 
 
-
+/* Breadcrumbs */
 
 
 .breadcrumbs {
@@ -257,6 +248,70 @@ button:hover {
     margin-right: 0rem;
 }
 
+
+
+
+/* index.html */
+
+.homepage_h1 {
+    font-size: 5rem;
+    font-weight: 100;
+    text-align: center;
+    font-family: 'EB Garamond';
+    width: fit-content;
+    z-index: -1;
+}
+
+.index_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1rem;
+}
+
+.index_grid a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    background-color: aquamarine;
+    aspect-ratio: 2/1;
+    border: var(--border);
+    border-radius: 10px;
+}
+
+.index_grid a:hover {
+    border: 1px solid var(--primary-color);
+
+}
+
+.index_grid a p {
+    font-size: 1.4rem;
+    font-weight: 100;
+    text-align: center;
+    margin: 0;
+}
+
+.index_category {
+    background-image: url(nicholasklaw_37223032_281099452650977_8858097081353502720_n.webp);
+    background-size: 120%;
+    background-position-y: 6%;
+    background-position-x: 50%;
+}
+
+.index_brands {
+    background-image: url(nicholasklaw_36483804_194087151245612_1429344199618068480_n.webp);
+    background-size: 150%;
+    background-position-y: 65%;
+    background-position-x: 10%;
+}
+
+
+
+
+
+/* kategori.html */
 
 .category_heading_container {
     display: flex;
